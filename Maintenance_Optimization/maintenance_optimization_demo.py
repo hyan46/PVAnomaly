@@ -5,6 +5,7 @@ import random
 import matplotlib.pyplot as plt
 from scipy.stats import weibull_min
 import math
+import arviz as az
 import matplotlib.patches as mpatches
 plt.rcParams['axes.unicode_minus'] = False
 
@@ -19,7 +20,7 @@ igbt_log = igbt_log.sort_values(by=['Inverter', 'Module'])
 
 #Reindexing
 igbt_log = igbt_log.reset_index(drop=True)
-igbt_log
+
 
 maintenance_index = igbt_log[['Inverter', 'Module']].duplicated(keep=False)
 maintenance_log = igbt_log[maintenance_index].reset_index(drop=True)
@@ -45,8 +46,6 @@ replace_log = maintenance_log[rows_same_as_previous]
 
 replace_log = replace_log.reset_index(drop=True)
 
-replace_log
-
 failure_log = [[] for _ in range(24)]
 
 for index, row in replace_log.iterrows():
@@ -56,25 +55,12 @@ for index, row in replace_log.iterrows():
 
         failure_log[month_index].append(row['LifeSpan'].days/365.25)
 
-failure_log
-
-import pymc as pm
-import arviz as az
-import numpy as np
-import matplotlib.pyplot as plt
-
 shape_prior, scale_prior = 0.76, 3.64           #1.35, 1.61
-
-# failure_log = np.array([0.1, 0.75, 1.1, 0.2])
 
 failure_ob = np.array([])
 for _ in failure_log:
   if _:
     failure_ob = np.append(failure_ob,np.array(_))
-
-print(failure_ob)
-
-# failure_ob = np.array([0.05, 0.25, 0.13, 0.68, 0.13, 0.12, 0.13, 0.5, 0.033, 0.364, 0.14, 0.167, 0.063, 0.167,0.167, 0.548])
 
 with pm.Model() as model:
 

@@ -113,3 +113,36 @@ The training process is logged to:
 
 Check these logs for training progress and any potential errors.
 
+
+## Results
+
+### Training History
+![Training History](plots/training_history.png)
+
+The training history plot shows:
+- Blue line: Raw episode rewards (alpha=0.3 for clarity)
+- Orange line: 100-episode moving average
+- Increasing trend indicates the agent is learning better maintenance policies
+- Fluctuations are normal due to the stochastic nature of the environment
+
+### Policy Map
+![Policy Map](plots/policy_map.png)
+
+The policy map visualization shows:
+- X-axis: Time (months)
+- Y-axis: Equipment degradation stage
+- Colors represent actions:
+  - Red (2): Continue production
+  - Yellow (1): Corrective maintenance
+  - Blue (0): Preventive maintenance
+- Interpretation:
+  - Lower stages (bottom): Agent tends to continue production
+  - Higher stages (top): Agent prefers maintenance actions
+  - Pattern changes over time due to varying reliability parameters
+
+### Reading the Policy Map
+1. Find the current stage (y-axis) and time (x-axis)
+2. The color at that point indicates the recommended action:
+   - Preventive maintenance (0): Perform scheduled maintenance
+   - Corrective maintenance (1): Immediate repair needed
+   - Continue production (2): Keep operating

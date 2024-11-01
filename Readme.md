@@ -22,6 +22,11 @@ This repository contains comprehensive implementations of industrial AI applicat
 │   └── PRBNN_power_prediction/
 │       ├── model/
 │       └── README.md
+├── Prognostics/                    # Prognostics with Euler Characteristics
+│   ├── README.md
+│   ├── custom_data_example.py
+│   ├── euler_faultdetection.py
+│   └── test_euler_faultdetection.py
 ├── environment.yml
 └── README.md
 ```
@@ -107,6 +112,47 @@ predictions = model.predict(X_test)
 
 [Details](Power_Prediction/PRBNN_power_prediction/README.md)
 
+### 5. Prognostics with Euler Characteristics
+
+Located in `Prognostics/`, this component implements a fault detection system using topological data analysis (Euler characteristics) combined with Bayesian Neural Networks.
+
+```python
+from Prognostics.euler_faultdetection import EulerFaultDetector, BayesianFaultPredictor
+
+# Initialize detector and predictor
+detector = EulerFaultDetector(num_points=20, 
+                            filtration_start=0.0, 
+                            filtration_end=30)
+predictor = BayesianFaultPredictor()
+
+# Process data and train
+euler_features = detector.compute_features(time_series_data)
+predictor.train(euler_features, labels)
+
+# Make predictions with uncertainty
+predictions, uncertainties = predictor.predict(new_data)
+```
+
+The system generates comprehensive visualizations of its performance:
+
+![Fault Detection Results](Prognostics/plots/fault_detection_results.png)
+
+The visualization shows three key aspects:
+1. Training History (Left):
+   - Training and validation loss curves
+   - Model convergence monitoring
+
+2. Prediction Results (Middle):
+   - True vs predicted values
+   - Uncertainty bars (95% confidence)
+   - Diagonal reference line
+
+3. Prediction Distribution (Right):
+   - Separation between normal/fault cases
+   - Overlap indicates uncertainty regions
+
+[Details](Prognostics/README.md)
+
 ## Data Requirements
 
 ### Maintenance Log Format
@@ -131,6 +177,15 @@ For deep learning models:
 - Environmental conditions
 - Operating parameters
 
+### Prognostics Data Format
+For Euler characteristic-based fault detection:
+- Time series data shape: (n_samples, sequence_length)
+- sequence_length = segment_size × num_segments
+- Default configuration: 
+  - segment_size: 96
+  - num_segments: 10
+- Binary labels (0: normal, 1: fault)
+
 ## Output Files
 
 Each component generates specific outputs:
@@ -151,10 +206,15 @@ Each component generates specific outputs:
 - Prediction uncertainty estimates
 - Performance metrics
 
+### Prognostics Results
+- `plots/fault_detection_results.png`: Combined visualization of results
+- `results/models/`: Saved Bayesian Neural Network models
+- `results/features/`: Computed Euler characteristics
+- Training history and performance metrics
+
 ## Example Results
 
-
-### 1. Maintenance Policy Optimization
+### Maintenance Policy Optimization
 ![RL Policy Map](Maintenance_Optimization/plots/policy_map.png)
 ```
 Maintenance policy visualization:
@@ -166,23 +226,24 @@ Maintenance policy visualization:
   - Red: Corrective maintenance
 ```
 
-### 4. Power Prediction Results
-![Power Prediction](figures/power_pred.png)
+### Prognostics Results
+![Fault Detection Results](Prognostics/plots/fault_detection_results.png)
 ```
-PRBNN prediction results showing:
-- Actual vs. predicted power output
-- Uncertainty bounds (95% confidence)
-- Error distribution analysis
-```
+The visualization shows three key aspects:
+1. Training History (Left):
+   - Training and validation loss curves
+   - Model convergence monitoring
 
-### 5. Training Progress
-![Training History](figures/training_history.png)
+2. Prediction Results (Middle):
+   - True vs predicted values
+   - Uncertainty bars (95% confidence)
+   - Diagonal reference line
+
+3. Prediction Distribution (Right):
+   - Separation between normal/fault cases
+   - Overlap indicates uncertainty regions
 ```
-Training metrics across components:
-- Loss convergence
-- Validation performance
-- Model optimization progress
-```
+[Details](Prognostics/README.md)
 
 ## Logging and Monitoring
 
@@ -213,6 +274,9 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 ## Future Work
 - [ ] Add data from solar PV system (Generated AI) to the repository for the Anomaly Detection, Power Prediction, and Prognostics
 - [ ] Add more benchmark models for the Anomaly Detection and Prognostics
+- [ ] Integrate Euler characteristic features with other detection methods
+- [ ] Extend the prognostics system to handle multiple fault types
+- [ ] Implement real-time processing capabilities
 
 ## Citation
 

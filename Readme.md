@@ -153,26 +153,9 @@ Each component generates specific outputs:
 
 ## Example Results
 
-### 1. Tensor-Based Anomaly Detection
-![Tensor Anomaly Detection](figures/tensor_anomaly.png)
-```
-Example visualization showing:
-- Left: Original tensor data projection
-- Middle: Reconstructed normal behavior
-- Right: Anomaly scores over time
-```
 
-### 2. Deep Learning Fault Detection
-![CNN Fault Detection](figures/cnn_results.png)
-```
-Multi-label fault detection results showing:
-- Confusion matrix for each fault type
-- ROC curves for detection performance
-- Feature importance visualization
-```
-
-### 3. Maintenance Policy Optimization
-![RL Policy Map](figures/rl_policy.png)
+### 1. Maintenance Policy Optimization
+![RL Policy Map](Maintenance_Optimization/plots/policy_map.png)
 ```
 Maintenance policy visualization:
 - X-axis: Time periods

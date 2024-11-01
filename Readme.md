@@ -96,8 +96,19 @@ processor.load_and_process_data('maintenance_log.csv')
 train_agent(episodes=2000, batch_size=128)
 ```
 
-[Details](Maintenance_Optimization/README.md)
 
+![RL Policy Map](Maintenance_Optimization/plots/policy_map.png)
+```
+Maintenance policy visualization:
+- X-axis: Time periods
+- Y-axis: Equipment state
+- Colors: Recommended actions
+  - 0, Black: Preventive maintenance
+  - 1, Red: Corrective maintenance
+  - 2, White: Continue operation
+```
+
+[Details](Maintenance_Optimization/README.md)
 ### 4. Power Prediction
 
 Located in `Power_Prediction/`, this component implements probabilistic power prediction using PRBNN.

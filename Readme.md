@@ -12,8 +12,6 @@ This repository contains comprehensive implementations of industrial AI applicat
 ├── Deep_Learning_for_Anomaly/      # Deep learning-based fault detection
 │   ├── data_loader.py
 │   ├── model.py
-│   ├── cnn_multilabel_detection.py
-│   ├── cnn_multilabel_prognostics.py
 │   └── README.md
 ├── Maintenance_Optimization/        # RL-based maintenance scheduling
 │   ├── data_processor.py
@@ -152,6 +150,56 @@ Each component generates specific outputs:
 - Trained model checkpoints
 - Prediction uncertainty estimates
 - Performance metrics
+
+## Example Results
+
+### 1. Tensor-Based Anomaly Detection
+![Tensor Anomaly Detection](figures/tensor_anomaly.png)
+```
+Example visualization showing:
+- Left: Original tensor data projection
+- Middle: Reconstructed normal behavior
+- Right: Anomaly scores over time
+```
+
+### 2. Deep Learning Fault Detection
+![CNN Fault Detection](figures/cnn_results.png)
+```
+Multi-label fault detection results showing:
+- Confusion matrix for each fault type
+- ROC curves for detection performance
+- Feature importance visualization
+```
+
+### 3. Maintenance Policy Optimization
+![RL Policy Map](figures/rl_policy.png)
+```
+Maintenance policy visualization:
+- X-axis: Time periods
+- Y-axis: Equipment state
+- Colors: Recommended actions
+  - Blue: Preventive maintenance
+  - Yellow: Continue operation
+  - Red: Corrective maintenance
+```
+
+### 4. Power Prediction Results
+![Power Prediction](figures/power_pred.png)
+```
+PRBNN prediction results showing:
+- Actual vs. predicted power output
+- Uncertainty bounds (95% confidence)
+- Error distribution analysis
+```
+
+### 5. Training Progress
+![Training History](figures/training_history.png)
+```
+Training metrics across components:
+- Loss convergence
+- Validation performance
+- Model optimization progress
+```
 
 ## Logging and Monitoring
 

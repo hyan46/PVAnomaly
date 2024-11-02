@@ -1,5 +1,6 @@
 # PVAnomaly: Predictive Maintenance, Anomaly Detection, and Power Prediction for Solar PV Systems
 
+This software is the result supported by funds from the U.S. Department of Energy's Office of Energy Efficiency and Renewable Energy (EERE) under the Solar Energy Technology Office (SETO) Award Number DE-EE0009354 (Program Manager: Dr. Tassos Golnas). The support is gratefully acknowledged.
 This repository contains comprehensive implementations of industrial AI applications, including predictive maintenance, anomaly detection, power prediction, and prognostics.
 
 ## Project Structure

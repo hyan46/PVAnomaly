@@ -154,12 +154,3 @@ The figure above shows three plots that demonstrate the system's performance:
 - **Prediction Results**: Points closer to the diagonal line indicate more accurate predictions. The error bars show prediction uncertainty - larger bars suggest less confident predictions.
 
 - **Distribution Plot**: Better separation between the two histograms indicates better discrimination between normal and fault conditions. Overlap between distributions suggests regions where the model is less certain.
-```
-
-This README provides a clear overview of the project structure and helps users understand:
-1. The purpose of each file
-2. How to get started
-3. How to use the system with their own data
-4. Key parameters and configurations
-
-You can place this README.md file in your Prognostics directory to provide documentation for users of your fault detection system.

@@ -1,4 +1,4 @@
-# Industrial AI: Predictive Maintenance, Anomaly Detection, and Power Prediction
+# PVAnomaly: Predictive Maintenance, Anomaly Detection, and Power Prediction for Solar PV Systems
 
 This repository contains comprehensive implementations of industrial AI applications, including predictive maintenance, anomaly detection, power prediction, and prognostics.
 

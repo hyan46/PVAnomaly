@@ -7,7 +7,6 @@ import torch.optim as optim
 from scipy.stats import weibull_min
 from collections import deque
 import random
-import matplotlib.pyplot as plt
 import json
 import os
 import sys
@@ -156,30 +155,6 @@ def optimize_model(memory, policy_net, target_net, optimizer, batch_size, gamma)
     loss.backward()
     optimizer.step()
 
-def output_policy_map(policy_net, env, n_stages=16):
-    os.makedirs('plots', exist_ok=True)
-    policy_map = np.zeros((n_stages, N_DAYS))
-
-    for stage in range(n_stages):
-        for day in range(N_DAYS):
-            state = np.array([stage, env.global_shape, env.global_scale * 24-day*0.5], dtype=np.float32)
-            action = select_action(state, policy_net, epsilon=0)
-            policy_map[stage, day] = action
-
-    plt.figure(figsize=(10, 8))
-    plt.imshow(policy_map, cmap='hot', interpolation='nearest')
-    plt.colorbar(label='Action (0: Preventive, 1: Corrective, 2: Produce)')
-    plt.title('Maintenance Policy Map')
-    plt.xlabel('Month')
-    plt.ylabel('Stage')
-    plt.xticks(range(N_DAYS))
-    plt.yticks(range(n_stages))
-    plt.savefig('plots/policy_map.png')
-    plt.close()
-
-    # Save policy map data
-    np.save('model_params/policy_map.npy', policy_map)
-
 def train_agent(episodes=2000, batch_size=128, gamma=0.999, 
                 epsilon_start=0.9, epsilon_end=0.05, 
                 epsilon_decay=200, target_update=10, buffer_size=10000):
@@ -189,7 +164,39 @@ def train_agent(episodes=2000, batch_size=128, gamma=0.999,
         
         # Create directories
         os.makedirs('model_params', exist_ok=True)
-        os.makedirs('plots', exist_ok=True)
+        
+        # Save training parameters
+        training_params = {
+            'episodes': episodes,
+            'batch_size': batch_size,
+            'gamma': gamma,
+            'epsilon_start': epsilon_start,
+            'epsilon_end': epsilon_end,
+            'epsilon_decay': epsilon_decay,
+            'target_update': target_update,
+            'buffer_size': buffer_size,
+            'training_date': datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        }
+        
+        # Save model architecture parameters
+        model_architecture = {
+            'input_size': 3,
+            'hidden_size': 128,
+            'output_size': 3,
+            'optimizer': 'Adam'
+        }
+        
+        # Combine all parameters
+        all_params = {
+            'training_params': training_params,
+            'model_architecture': model_architecture
+        }
+        
+        # Save parameters to JSON file
+        params_save_path = 'model_params/model_parameters.json'
+        with open(params_save_path, 'w') as f:
+            json.dump(all_params, f, indent=4)
+        logging.info(f"Saved model parameters to {params_save_path}")
         
         env = MaintenanceEnv()
         policy_net = PolicyNet()
@@ -229,25 +236,13 @@ def train_agent(episodes=2000, batch_size=128, gamma=0.999,
             if episode % target_update == 0:
                 target_net.load_state_dict(policy_net.state_dict())
 
-        # Save the trained model
+        # Save the trained model and rewards history
         model_save_path = 'model_params/maintenance_policy.pth'
-        torch.save(policy_net.state_dict(), model_save_path)
-        logging.info(f"Saved model to {model_save_path}")
-        
-        # Plot and save training history
-        plt.figure(figsize=(10, 6))
-        plt.plot(rewards_history)
-        plt.title('Training Rewards History')
-        plt.xlabel('Episode')
-        plt.ylabel('Total Reward')
-        history_plot_path = 'plots/training_history.png'
-        plt.savefig(history_plot_path)
-        plt.close()
-        logging.info(f"Saved training history plot to {history_plot_path}")
-
-        # Generate and save policy map
-        output_policy_map(policy_net, env)
-        logging.info("Generated and saved policy map")
+        torch.save({
+            'model_state_dict': policy_net.state_dict(),
+            'rewards_history': rewards_history
+        }, model_save_path)
+        logging.info(f"Saved model and rewards history to {model_save_path}")
         
         return True
 
